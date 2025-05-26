@@ -10,7 +10,8 @@ public class MaxHeap {
 	}
 
 	public Task peek() {
-		return heap.getFirst();
+		if (heap.isEmpty()) return null;
+		return heap.get(0);
 	}
 
 	public void insert(Task task) {
@@ -42,9 +43,45 @@ public class MaxHeap {
 		heap.set(indexPai, temp);
 	}
 
-	// extractMax
+	public Task extractMax() {
+		if (heap.isEmpty()) {
+			return null;
+		}
 
-	// heapifyDown
+		Task max = heap.get(0);
+		Task last = heap.remove(heap.size() - 1);
+
+		if (!heap.isEmpty()) {
+			heap.set(0, last);
+			heapifyDown(0);
+		}
+
+		return max;
+	}
+
+	private void heapifyDown(int index) {
+		int size = heap.size();
+		while (index < size) {
+			int leftChild = 2 * index + 1;
+			int rightChild = 2 * index + 2;
+			int largest = index;
+
+			if (leftChild < size && heap.get(leftChild).getPrioridade() > heap.get(largest).getPrioridade()) {
+				largest = leftChild;
+			}
+
+			if (rightChild < size && heap.get(rightChild).getPrioridade() > heap.get(largest).getPrioridade()) {
+				largest = rightChild;
+			}
+
+			if (largest != index) {
+				swap(index, largest);
+				index = largest;
+			} else {
+				break;
+			}
+		}
+	}
 
 	public void visualizarHeap() {
 		for (int i = 0; i < heap.size(); i++) {
